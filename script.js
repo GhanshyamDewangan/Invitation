@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const observerOptions = {
     root: null,
     rootMargin: "0px",
-    threshold: 0.15,
+    threshold: 0.12,
   };
 
   const revealElements = document.querySelectorAll(
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("active");
-        observer.unobserve(entry.target); // Reveal only once
+        observer.unobserve(entry.target);
       }
     });
   }, observerOptions);
@@ -36,17 +36,18 @@ document.addEventListener("DOMContentLoaded", () => {
   revealElements.forEach((el) => revealObserver.observe(el));
 
   /* =====================================
-       PARTICLES BACKGROUND ENGINE
+       REFINED PARTICLES BACKGROUND
        ===================================== */
   const canvas = document.getElementById("particles-canvas");
   const ctx = canvas.getContext("2d");
 
   let width, height;
   let particles = [];
+  let mouse = { x: null, y: null };
 
-  // Config
-  const particleCount = window.innerWidth < 768 ? 50 : 120;
-  const maxDistance = 150;
+  // Subtle config
+  const particleCount = window.innerWidth < 768 ? 40 : 80;
+  const maxDistance = 130;
 
   function resizeCanvas() {
     width = window.innerWidth;
@@ -55,31 +56,56 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.height = height;
   }
 
+  // Track mouse for subtle interactivity
+  window.addEventListener("mousemove", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  window.addEventListener("mouseout", () => {
+    mouse.x = null;
+    mouse.y = null;
+  });
+
   class Particle {
     constructor() {
       this.x = Math.random() * width;
       this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.radius = Math.random() * 2 + 1;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.radius = Math.random() * 1.5 + 0.5;
 
-      // Randomly assign Google Colors or white
+      // Muted, premium color palette
       const colors = [
-        "#4285F4",
-        "#EA4335",
-        "#FBBC05",
-        "#34A853",
-        "#ffffff",
-        "#ff007f",
-        "#00f3ff",
+        "rgba(66, 133, 244, 0.6)",    // Google Blue
+        "rgba(234, 67, 53, 0.4)",     // Google Red
+        "rgba(251, 188, 4, 0.4)",     // Google Yellow
+        "rgba(52, 168, 83, 0.4)",     // Google Green
+        "rgba(108, 99, 255, 0.5)",    // Accent purple
+        "rgba(255, 255, 255, 0.2)",   // Subtle white
       ];
       this.color = colors[Math.floor(Math.random() * colors.length)];
-      this.alpha = Math.random() * 0.5 + 0.1;
+      this.alpha = Math.random() * 0.4 + 0.05;
     }
 
     update() {
+      // Subtle mouse attraction
+      if (mouse.x !== null && mouse.y !== null) {
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 200) {
+          this.vx += dx * 0.00003;
+          this.vy += dy * 0.00003;
+        }
+      }
+
       this.x += this.vx;
       this.y += this.vy;
+
+      // Slow down velocity (damping)
+      this.vx *= 0.999;
+      this.vy *= 0.999;
 
       // Bounce off edges
       if (this.x < 0 || this.x > width) this.vx *= -1;
@@ -115,10 +141,9 @@ document.addEventListener("DOMContentLoaded", () => {
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
 
-          // Opacity based on distance
           const opacity = 1 - distance / maxDistance;
-          ctx.strokeStyle = `rgba(138, 43, 226, ${opacity * 0.2})`; // subtle purple lines
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = `rgba(108, 99, 255, ${opacity * 0.08})`;
+          ctx.lineWidth = 0.5;
           ctx.stroke();
         }
       }
@@ -149,17 +174,15 @@ document.addEventListener("DOMContentLoaded", () => {
   animate();
 
   /* =====================================
-       SMOOTH SCROLL LINKS FIX
+       SMOOTH SCROLL LINKS
        ===================================== */
   document.querySelectorAll('.nav-links a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
       e.preventDefault();
 
-      // Remove active class from all
       document
         .querySelectorAll(".nav-links a")
         .forEach((a) => a.classList.remove("active"));
-      // Add to clicked
       this.classList.add("active");
 
       const targetId = this.getAttribute("href");
@@ -191,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (node.nodeType === 3) {
           if (node.nodeValue.length > 0) {
             textNodes.push({ node: node, text: node.nodeValue });
-            node.nodeValue = ""; // Clear text for typing
+            node.nodeValue = "";
           }
         } else {
           if (node.classList && node.classList.contains("cursor")) return;
@@ -208,7 +231,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return new Promise(resolve => {
       const textNodes = extractTextNodes(element);
       
-      // Ensure all nodes are cleared before typing again
       textNodes.forEach(obj => obj.node.nodeValue = "");
       
       let nodeIndex = 0;
@@ -243,7 +265,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return new Promise(resolve => {
       const textNodes = extractTextNodes(element);
       
-      // Ensure all nodes are fully visible before untyping
       textNodes.forEach(obj => obj.node.nodeValue = obj.text);
 
       let nodeIndex = textNodes.length - 1;
@@ -291,8 +312,8 @@ document.addEventListener("DOMContentLoaded", () => {
       
       await typeSequence(typeCode, 30);
       
-      // Hold the fully typed text so user can read it
-      await new Promise(r => setTimeout(r, 4000));
+      // Hold the fully typed text
+      await new Promise(r => setTimeout(r, 5000));
       
       // Untype sequence
       await untypeSequence(typeCode, 15);
@@ -300,12 +321,12 @@ document.addEventListener("DOMContentLoaded", () => {
       
       await untypeSequence(typeTitle, 20);
       
-      // Brief pause before starting over
-      await new Promise(r => setTimeout(r, 1000));
+      // Brief pause before restarting
+      await new Promise(r => setTimeout(r, 1200));
     }
   }
 
-  // Set slight delay on page load before starting typing
-  setTimeout(startInfiniteTypingLoop, 500);
+  // Start typing after a brief delay
+  setTimeout(startInfiniteTypingLoop, 600);
 
 });
