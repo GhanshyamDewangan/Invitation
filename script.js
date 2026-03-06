@@ -77,15 +77,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Muted, premium color palette
       const colors = [
-        "rgba(66, 133, 244, 0.6)",    // Google Blue
-        "rgba(234, 67, 53, 0.4)",     // Google Red
-        "rgba(251, 188, 4, 0.4)",     // Google Yellow
-        "rgba(52, 168, 83, 0.4)",     // Google Green
-        "rgba(108, 99, 255, 0.5)",    // Accent purple
-        "rgba(255, 255, 255, 0.2)",   // Subtle white
+        "rgba(66, 133, 244, 0.8)",    // Google Blue
+        "rgba(234, 67, 53, 0.7)",     // Google Red
+        "rgba(251, 188, 4, 0.7)",     // Google Yellow
+        "rgba(52, 168, 83, 0.7)",     // Google Green
+        "rgba(108, 99, 255, 0.8)",    // Accent purple
+        "rgba(255, 255, 255, 0.5)",   // Subtle white
       ];
       this.color = colors[Math.floor(Math.random() * colors.length)];
-      this.alpha = Math.random() * 0.4 + 0.05;
+      this.alpha = Math.random() * 0.4 + 0.25;
     }
 
     update() {
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ctx.lineTo(particles[j].x, particles[j].y);
 
           const opacity = 1 - distance / maxDistance;
-          ctx.strokeStyle = `rgba(108, 99, 255, ${opacity * 0.08})`;
+          ctx.strokeStyle = `rgba(108, 99, 255, ${opacity * 0.35})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }

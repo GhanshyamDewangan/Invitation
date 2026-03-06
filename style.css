@@ -124,9 +124,9 @@ img {
   width: 100vw;
   height: 100vh;
   z-index: -2;
-  background: radial-gradient(ellipse at 20% 50%, rgba(66, 133, 244, 0.03) 0%, transparent 50%),
-              radial-gradient(ellipse at 80% 20%, rgba(52, 168, 83, 0.02) 0%, transparent 50%),
-              radial-gradient(ellipse at 50% 80%, rgba(234, 67, 53, 0.015) 0%, transparent 50%),
+  background: radial-gradient(ellipse at 20% 50%, rgba(66, 133, 244, 0.09) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(52, 168, 83, 0.07) 0%, transparent 60%),
+              radial-gradient(ellipse at 50% 80%, rgba(234, 67, 53, 0.06) 0%, transparent 60%),
               var(--bg-primary);
 }
 
@@ -138,8 +138,8 @@ img {
   height: 100vh;
   z-index: -1;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
   mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
@@ -524,18 +524,18 @@ section {
 .floating-icons i,
 .floating-icons span {
   position: absolute;
-  color: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.1);
   font-size: 1.8rem;
   font-weight: bold;
   font-family: 'Fira Code', monospace;
 }
 
-.icon1 { top: 20%; left: 10%; animation: gentle-float 5s infinite 0.5s; color: rgba(66, 133, 244, 0.08) !important; }
-.icon2 { top: 60%; left: 5%; animation: gentle-float 6s infinite 1s; color: rgba(251, 188, 4, 0.08) !important; }
-.icon3 { top: 15%; right: 15%; animation: gentle-float 7s infinite 0.2s; color: rgba(234, 67, 53, 0.08) !important; }
-.icon4 { top: 70%; right: 10%; animation: gentle-float 5.5s infinite 1.5s; color: rgba(52, 168, 83, 0.08) !important; }
-.icon5 { top: 40%; left: 45%; animation: gentle-float 6.5s infinite 2s; color: rgba(108, 99, 255, 0.06) !important; font-size: 2.5rem !important; }
-.icon6 { bottom: 10%; right: 30%; animation: gentle-float 7.5s infinite 0.8s; color: rgba(139, 92, 246, 0.06) !important; font-size: 2.2rem !important; }
+.icon1 { top: 20%; left: 10%; animation: gentle-float 5s infinite 0.5s; color: rgba(66, 133, 244, 0.25) !important; }
+.icon2 { top: 60%; left: 5%; animation: gentle-float 6s infinite 1s; color: rgba(251, 188, 4, 0.25) !important; }
+.icon3 { top: 15%; right: 15%; animation: gentle-float 7s infinite 0.2s; color: rgba(234, 67, 53, 0.25) !important; }
+.icon4 { top: 70%; right: 10%; animation: gentle-float 5.5s infinite 1.5s; color: rgba(52, 168, 83, 0.25) !important; }
+.icon5 { top: 40%; left: 45%; animation: gentle-float 6.5s infinite 2s; color: rgba(108, 99, 255, 0.2) !important; font-size: 2.5rem !important; }
+.icon6 { bottom: 10%; right: 30%; animation: gentle-float 7.5s infinite 0.8s; color: rgba(139, 92, 246, 0.2) !important; font-size: 2.2rem !important; }
 
 /* =========================================
    ABOUT SECTION
@@ -783,9 +783,7 @@ section {
   border-radius: 50%;
 }
 
-.person-card.sru-card-small {
-  border-radius: 50px; /* heavily rounded pill/circle shape for the card */
-}
+
 
 .person-img-wrapper.sru-img .person-img {
   object-position: top;
@@ -1099,11 +1097,27 @@ section {
     border-radius: var(--radius-md);
   }
 
+  .details-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none; /* remove default bullets */
+    padding: 0;
+    margin: 0;
+  }
+
   .detail-item {
+    display: flex;
     flex-direction: row;
     align-items: center;
     text-align: left;
-    padding: 12px;
+    padding: 12px 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .details-list .detail-item:nth-child(1),
+  .details-list .detail-item:nth-child(2) {
+    width: 50%;
   }
 
   .agenda-wrapper {
